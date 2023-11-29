@@ -1,40 +1,17 @@
-import {useEffect} from 'react'
+import useMovieListHook from '../utils/useMovieListHook'
 import Header from './Header'
-import { onAuthStateChanged} from 'firebase/auth'
-import { auth } from "./firebase.js";
-import { useDispatch } from "react-redux";
-import { addUser, removeUser } from "../utils/userSlice.js";
-import { useNavigate } from 'react-router-dom';
+import MainContainer from './MainContainer'
+import SecondaryContainer from './SecondaryContainer'
+
 
 
 const Browse = () => {
-  const dispatch = useDispatch()
-  const navigate =useNavigate()
-
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        const { uid, email, displayName,photoURL } = user;
-        console.log(uid,email,displayName)
-        dispatch(
-          addUser({
-            uid: uid,
-            email: email,
-            displayName: displayName,
-            photoURL:photoURL
-          })
-        );
-        navigate("/browse");
-      } else {
-          dispatch(removeUser());
-          navigate("/");
-      }
-    });
-  }, []);
+  const movieList = useMovieListHook()
   return (
     <div>
       <Header/>
+      <MainContainer/>
+      <SecondaryContainer/>
     </div>
   )
 }

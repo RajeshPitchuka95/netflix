@@ -7,9 +7,9 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice.js";
+import { HOME_BACKGROUND_IMAGE, USER_AVATAR } from "../utils/constants.js";
 
 function Login() {
   const [isSignIn, setSignIn] = useState(true);
@@ -17,7 +17,6 @@ function Login() {
   const name = useRef(null);
   const email = useRef(null);
   const password = useRef(null);
-  const navgate = useNavigate();
   const dispatch = useDispatch();
 
   const handleToggleButton = () => {
@@ -37,7 +36,7 @@ function Login() {
         .then((userCredential) => {
           const user = userCredential.user;
           updateProfile(user, {
-            displayName: name.current.value, photoURL: "https://avatars.githubusercontent.com/u/149673127?s=400&u=131d3921fc8856e7baffcf6f6c694b0ef70f311c&v="
+            displayName: name.current.value,photoURL: USER_AVATAR
           }).then(() => {
             const {uid,email,displayName,photoURL} = auth.currentUser;
             dispatch(
@@ -48,7 +47,6 @@ function Login() {
                 photoURL:photoURL
               })
             );
-            navgate("/browse");
           }).catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
@@ -63,9 +61,7 @@ function Login() {
       )
         .then((userCredential) => {
           const user = userCredential.user;
-          if (user) {
-            navgate("/browse");
-          }
+         
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -80,7 +76,7 @@ function Login() {
       <Header />
       <div className="absolute">
         <img
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/ab4b0b22-2ddf-4d48-ae88-c201ae0267e2/0efe6360-4f6d-4b10-beb6-81e0762cfe81/IN-en-20231030-popsignuptwoweeks-perspective_alpha_website_small.jpg"
+          src={HOME_BACKGROUND_IMAGE}
           alt="body"
         />
       </div>
